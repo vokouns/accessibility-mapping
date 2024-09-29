@@ -1,14 +1,14 @@
 import requests
 import json
-from console import google_places_api_key  # Importing your API key from console.py
 import os
 import time
+from console import google_places_api_key  # Importing your API key from console.py
 
 def get_place_details(place_id):
     details_url = "https://maps.googleapis.com/maps/api/place/details/json"
     params = {
         "place_id": place_id,
-        "fields": "name,place_id,wheelchair_accessible_entrance,geometry",  # Only the required fields
+        "fields": "name,place_id,formatted_address,wheelchair_accessible_entrance,geometry",  # Add any other fields of interest
         "key": google_places_api_key
     }
 
@@ -22,7 +22,7 @@ def get_place_details(place_id):
         print(f"Error fetching details for Place ID: {place_id}, Status: {details.get('status')}")
         return {}
 
-def fetch_detailed_info(restaurants):
+def fetch_accessibility_info(restaurants):
     detailed_restaurants = []
 
     for restaurant in restaurants:
@@ -32,13 +32,17 @@ def fetch_detailed_info(restaurants):
         details = get_place_details(place_id)
 
         if details:
-            # Only include the necessary fields
+            # Add the required fields, including accessibility details
             detailed_restaurant = {
                 "name": details.get('name', 'Unknown'),
                 "place_id": details.get('place_id', 'Unknown'),
-                "wheelchair_accessible_entrance": details.get('wheelchair_accessible_entrance', 'Unknown'),
+                "formatted_address": details.get('formatted_address', 'Unknown'),
                 "latitude": details.get('geometry', {}).get('location', {}).get('lat', 'Unknown'),
-                "longitude": details.get('geometry', {}).get('location', {}).get('lng', 'Unknown')
+                "longitude": details.get('geometry', {}).get('location', {}).get('lng', 'Unknown'),
+                "wheelchair_accessible_entrance": details.get('wheelchair_accessible_entrance', 'Unknown'),
+                "wheelchair_accessible_parking": "Unknown",  # Placeholder for future data
+                "wheelchair_accessible_restroom": "Unknown",  # Placeholder for future data
+                "wheelchair_accessible_seating": "Unknown"  # Placeholder for future data
             }
             detailed_restaurants.append(detailed_restaurant)
         else:
@@ -47,8 +51,9 @@ def fetch_detailed_info(restaurants):
                 "name": restaurant['name'],
                 "place_id": restaurant['place_id'],
                 "wheelchair_accessible_entrance": "Unknown",
-                "latitude": "Unknown",  # Added latitude to fallback
-                "longitude": "Unknown"  # Added longitude to fallback
+                "wheelchair_accessible_parking": "Unknown",  # Placeholder for future data
+                "wheelchair_accessible_restroom": "Unknown",  # Placeholder for future data
+                "wheelchair_accessible_seating": "Unknown"  # Placeholder for future data
             })
 
         # Add a short delay to avoid exceeding API rate limits
@@ -56,7 +61,7 @@ def fetch_detailed_info(restaurants):
 
     # Save the detailed data to a JSON file
     data_folder = os.path.join(os.getcwd(), "data")
-    file_path = os.path.join(data_folder, "accessible_restaurant_info.json")
+    file_path = os.path.join(data_folder, "updated_accessibility_restaurant_info.json")
 
     with open(file_path, 'w') as json_file:
         json.dump(detailed_restaurants, json_file, indent=4)
@@ -64,12 +69,10 @@ def fetch_detailed_info(restaurants):
     print(f"Accessible restaurant info saved to {file_path}")
     return detailed_restaurants
 
-# Highlight: Pulling place IDs from 'all_restaurants_list.json'
-# -----------------------------------------------------------
-# This is the section where the place IDs are read from the file
-restaurants_list_path = os.path.join(os.getcwd(), "data", "all_restaurants_list.json")
+# Load the previously saved results (e.g., from your shifted searches)
+restaurants_list_path = os.path.join(os.getcwd(), "data", "shifted_restaurants_list.json")
 with open(restaurants_list_path, 'r') as file:
     restaurants = json.load(file)
-# -----------------------------------------------------------
 
-detailed_info = fetch_detailed_info(restaurants)
+# Fetch detailed info, including accessibility
+detailed_info = fetch_accessibility_info(restaurants)

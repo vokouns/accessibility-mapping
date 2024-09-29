@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Mapping</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Link to your external CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center">Accessibility Mapping</h1>
+        
+        <!-- Bootstrap Grid System -->
+        <div class="row">
+            <!-- Map column taking up 75% of the space -->
+            <div class="col-md-9">
+                <div id="map"></div>
+            </div>
+            
+            <!-- Information column taking up 25% of the space -->
+            <div class="col-md-3">
+                <h2>Restaurant Details</h2>
+                <div id="restaurant-info">
+                    <p>Select a restaurant to see accessibility details.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Link to your external JS -->
+    <script src="static/js/map.js"></script>
+</body>
+</html>
