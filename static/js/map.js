@@ -1,5 +1,5 @@
 // Load the data using D3
-d3.json("data/2024-09-29_accessible_restaurant_info.json").then(function(data) {
+d3.json("data/2024-10-06_accessibility_restaurant_info.json").then(function(data) {
 
     // Initialize the map
     var map = L.map('map').setView([45.6346, -122.6731], 13);  // Center at Vancouver, WA
@@ -14,7 +14,7 @@ d3.json("data/2024-09-29_accessible_restaurant_info.json").then(function(data) {
         const infoDiv = document.getElementById('restaurant-info');
         infoDiv.innerHTML = `
             <h3>${restaurant.name}</h3>
-            <p><strong>Address:</strong> ${restaurant.address || 'Unknown'}</p>
+            <p><strong>Address:</strong> ${restaurant.formatted_address || 'Unknown'}</p>
             <p><strong>Wheelchair Accessible Entrance:</strong> ${restaurant.wheelchair_accessible_entrance}</p>
             <p><strong>Wheelchair Accessible Parking:</strong> ${restaurant.wheelchair_accessible_parking || 'Unknown'}</p>
             <p><strong>Wheelchair Accessible Restroom:</strong> ${restaurant.wheelchair_accessible_restroom || 'Unknown'}</p>
